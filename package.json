@@ -1,0 +1,49 @@
+{
+  "author": "Roberto Pintos López",
+  "bugs": {
+    "url": "https://github.com/inversify/db/issues"
+  },
+  "name": "root",
+  "description": "Inversify DB monorepo root package",
+  "devDependencies": {
+    "@changesets/cli": "2.31.0",
+    "@commitlint/cli": "21.0.2",
+    "@commitlint/config-conventional": "21.0.2",
+    "@commitlint/prompt-cli": "21.0.2",
+    "@eslint/js": "10.0.1",
+    "@inversifyjs/eslint-plugin-require-extensions": "0.2.0",
+    "@inversifyjs/foundation-changelog-generator": "0.2.0",
+    "@inversifyjs/foundation-eslint-config": "0.2.1",
+    "@inversifyjs/foundation-prettier-config": "0.1.1",
+    "@inversifyjs/foundation-scripts": "workspace:*",
+    "@inversifyjs/foundation-typescript-config": "0.2.0",
+    "@inversifyjs/foundation-vitest-config": "0.2.0",
+    "husky": "9.1.7",
+    "knip": "6.14.2",
+    "lint-staged": "17.0.5",
+    "turbo": "2.9.16"
+  },
+  "homepage": "https://inversify.io/db/",
+  "license": "MIT",
+  "packageManager": "pnpm@11.4.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inversify/db.git"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "commit": "commit",
+    "format": "turbo run format",
+    "lint": "turbo run lint",
+    "prepare": "husky && turbo telemetry disable",
+    "prerelease": "pnpm run build",
+    "release": "changeset publish",
+    "test:integration": "turbo test:integration",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "test:uncommitted": "turbo run test:uncommitted --filter [HEAD]",
+    "test:unit": "turbo run test:unit",
+    "unused": "knip"
+  }
+}
