@@ -1,0 +1,74 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "automerge": false,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update node version tracked in package.json engines field",
+      "fileMatch": ["(^|/)package\\.json$"],
+      "matchStrings": [
+        "\"devEngines\"\\s*:\\s*\\{[\\s\\S]*?\"node\"\\s*:\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "depNameTemplate": "node",
+      "datasourceTemplate": "node-version"
+    },
+    {
+      "customType": "regex",
+      "description": "Update pnpm version tracked in package.json engines field",
+      "fileMatch": ["(^|/)package\\.json$"],
+      "matchStrings": [
+        "\"devEngines\"\\s*:\\s*\\{[\\s\\S]*?\"pnpm\"\\s*:\\s*\"(?<currentValue>[^\"]+)\""
+      ],
+      "depNameTemplate": "pnpm",
+      "datasourceTemplate": "npm"
+    }
+  ],
+  "constraints": {
+    "pnpm": "11.4.0"
+  },
+  "extends": [
+    ":dependencyDashboard",
+    ":disableRateLimiting",
+    ":semanticCommitScopeDisabled",
+    ":semanticPrefixFixDepsChoreOthers",
+    "group:monorepos",
+    "group:recommended",
+    "helpers:pinGitHubActionDigests",
+    "mergeConfidence:age-confidence-badges",
+    "replacements:all",
+    "workarounds:all"
+  ],
+  "ignoreDeps": [],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**",
+    "**/__tests__/**",
+    "**/test/**",
+    "**/tests/**",
+    "**/__fixtures__/**"
+  ],
+  "packageRules": [
+    {
+      "automerge": true,
+      "description": "auto merge on patch or minor",
+      "groupName": "auto merge on patch or minor",
+      "matchUpdateTypes": ["patch", "minor"],
+      "matchPackageNames": ["!turbo", "!typescript"]
+    },
+    {
+      "description": "Group GitHub Actions updates",
+      "groupName": "GitHub Actions",
+      "matchManagers": ["github-actions"]
+    },
+    {
+      "description": "Quarantine packages with current known issues",
+      "enabled": false,
+      "matchPackageNames": []
+    }
+  ],
+  "rangeStrategy": "bump",
+  "rebaseWhen": "conflicted",
+  "semanticCommits": "enabled",
+  "schedule": ["at any time"]
+}

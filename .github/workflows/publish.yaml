@@ -1,0 +1,47 @@
+name: Publish npm packages
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Must match your username"
+        required: true
+        type: choice
+        options:
+          - notaphplover
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Publish npm packages
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.environment }}
+    steps:
+      - name: Validate environment matches actor
+        run: |
+          echo "Actor: ${{ github.actor }}"
+          echo "Environment: ${{ inputs.environment }}"
+
+          if [ "${{ inputs.environment }}" != "${{ github.actor }}" ]; then
+            echo "::error::Environment must match your username"
+            exit 1
+          fi
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup
+
+      - name: Publish npm packages
+        uses: changesets/action@63a615b9cd06ba9a3e6d13796c7fbcb080a60a0b # v1.8.0
+        with:
+          publish: pnpm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
