@@ -21,12 +21,13 @@ export default {
   workspaces: {
     ".": {
       entry: [],
-      ignoreDependencies: [
-        ...defaultWorkspaceProjectConfig.ignoreDependencies,
-        "@inversifyjs/foundation-scripts",
-      ],
       project: [],
     },
     "packages/*": defaultWorkspaceProjectConfig,
+    "packages/prisma": {
+      ...defaultWorkspaceProjectConfig,
+      ignoreDependencies: ["@prisma/client"],
+      ignoreFiles: ["src/sqlite/generated/**"],
+    },
   },
 } satisfies KnipConfig;
