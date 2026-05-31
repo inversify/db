@@ -14,6 +14,10 @@ const isPrismaTransactionWrapperSymbol: unique symbol = Symbol.for(
   '@academyjs/backend-db/PrismaTransactionWrapper',
 );
 
+type TransactionOptions<TClient extends PrismaClient> = Parameters<
+  TClient['$transaction']
+>[1];
+
 export class PrismaTransactionWrapper<
   TClient extends PrismaClient,
   TTransactionClient,
@@ -22,10 +26,10 @@ export class PrismaTransactionWrapper<
   #isCommitted: boolean;
   readonly #propertiesPromise: Promise<Properties<TTransactionClient>>;
 
-  constructor(client: TClient) {
+  constructor(client: TClient, options?: TransactionOptions<TClient>) {
     this[isPrismaTransactionWrapperSymbol] = true;
     this.#isCommitted = false;
-    this.#propertiesPromise = this.#getProperties(client);
+    this.#propertiesPromise = this.#getProperties(client, options);
   }
 
   public static is<TTransactionClient>(
@@ -81,6 +85,7 @@ export class PrismaTransactionWrapper<
 
   async #getProperties(
     client: TClient,
+    options: TransactionOptions<TClient> | undefined,
   ): Promise<
     [Promise<void>, TTransactionClient, () => void, (reason: unknown) => void]
   > {
@@ -113,6 +118,7 @@ export class PrismaTransactionWrapper<
 
             return innerPromise;
           },
+          options,
         );
       },
     );
