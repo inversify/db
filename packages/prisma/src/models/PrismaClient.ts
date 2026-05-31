@@ -1,9 +1,3 @@
-type TransactionIsolationLevel =
-  | 'ReadUncommitted'
-  | 'ReadCommitted'
-  | 'RepeatableRead'
-  | 'Serializable';
-
 export interface PrismaClient {
   $transaction: <T>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,7 +5,8 @@ export interface PrismaClient {
     options?: {
       maxWait?: number;
       timeout?: number;
-      isolationLevel?: TransactionIsolationLevel;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      isolationLevel?: any;
     },
   ) => Promise<T>;
 }

@@ -1,4 +1,4 @@
-export type TypeMapOperationKind =
+export type OperationKind =
   | 'create'
   | 'createManyAndReturn'
   | 'delete'

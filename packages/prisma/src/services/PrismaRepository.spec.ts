@@ -9,20 +9,25 @@ import {
   vitest,
 } from 'vitest';
 
+import { type OperationKind } from '../models/OperationKind.js';
 import { type PrismaDelegate } from '../models/PrismaDelegate.js';
-import { type TypeMapModel } from '../models/TypeMapModel.js';
-import { type TypeMapOperationKind } from '../models/TypeMapOperationKind.js';
 import { PrismaRepository } from './PrismaRepository.js';
 
-class TestPrismaRepository extends PrismaRepository<TypeMapModel, unknown> {
+type TestDelegate = Record<
+  OperationKind,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (args: any) => Promise<unknown>
+>;
+
+class TestPrismaRepository extends PrismaRepository<TestDelegate, unknown> {
   readonly #getDelegateMock: Mock<
-    (transactionClient: unknown) => PrismaDelegate<TypeMapModel>
+    (transactionClient: unknown) => PrismaDelegate<TestDelegate>
   >;
 
   constructor(
-    delegate: PrismaDelegate<TypeMapModel>,
+    delegate: PrismaDelegate<TestDelegate>,
     getDelegateMock: Mock<
-      (transactionClient: unknown) => PrismaDelegate<TypeMapModel>
+      (transactionClient: unknown) => PrismaDelegate<TestDelegate>
     >,
   ) {
     super(delegate);
@@ -32,14 +37,14 @@ class TestPrismaRepository extends PrismaRepository<TypeMapModel, unknown> {
 
   protected _getDelegate(
     transactionClient: unknown,
-  ): PrismaDelegate<TypeMapModel> {
+  ): PrismaDelegate<TestDelegate> {
     return this.#getDelegateMock(transactionClient);
   }
 }
 
 async function callPrismaRepositoryOperation(
   prismaRepository: TestPrismaRepository,
-  operationKind: TypeMapOperationKind,
+  operationKind: OperationKind,
   args: unknown,
   transaction?: unknown,
 ): Promise<unknown> {
@@ -47,7 +52,7 @@ async function callPrismaRepositoryOperation(
     case 'create':
       return prismaRepository.create(args, transaction);
     case 'createManyAndReturn':
-      return prismaRepository.createMany(args, transaction);
+      return prismaRepository.createManyAndReturn(args, transaction);
     case 'delete':
       return prismaRepository.delete(args, transaction);
     case 'deleteMany':
@@ -64,9 +69,9 @@ async function callPrismaRepositoryOperation(
 }
 
 describe(PrismaRepository, () => {
-  let delegateMock: Mocked<PrismaDelegate<TypeMapModel>>;
+  let delegateMock: Mocked<PrismaDelegate<TestDelegate>>;
   let getDelegateMock: Mock<
-    (transactionClient: unknown) => PrismaDelegate<TypeMapModel>
+    (transactionClient: unknown) => PrismaDelegate<TestDelegate>
   >;
 
   let createPrismaService: TestPrismaRepository;
@@ -91,7 +96,7 @@ describe(PrismaRepository, () => {
     );
   });
 
-  describe.each<TypeMapOperationKind>([
+  describe.each<OperationKind>([
     'create',
     'createManyAndReturn',
     'delete',
@@ -100,7 +105,7 @@ describe(PrismaRepository, () => {
     'findMany',
     'update',
     'updateManyAndReturn',
-  ])(`.%s`, (operationKind: TypeMapOperationKind) => {
+  ])(`.%s`, (operationKind: OperationKind) => {
     describe('having no transaction', () => {
       let prismaCreateArgsFixture: unknown;
 

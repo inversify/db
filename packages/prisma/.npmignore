@@ -5,6 +5,8 @@
 
 {lib,src}/**/*.spec.{d.ts,d.ts.map,js,js.map}
 
+lib/esm/sqlite
+
 src/
 
 .lintstagedrc.json

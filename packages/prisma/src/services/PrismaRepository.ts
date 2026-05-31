@@ -1,76 +1,96 @@
+import { type OperationKind } from '../models/OperationKind.js';
+import { type Parameter } from '../models/Parameter.js';
 import { type PrismaDelegate } from '../models/PrismaDelegate.js';
-import { type TypeMapModel } from '../models/TypeMapModel.js';
-import { type TypeMapOperationKind } from '../models/TypeMapOperationKind.js';
 import { BasePrismaService } from './BasePrismaService.js';
 
 export abstract class PrismaRepository<
-  TTypeMapModel extends TypeMapModel,
+  TDelegate extends Record<
+    OperationKind,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (args: any) => Promise<unknown>
+  >,
   TTransactionClient,
-> extends BasePrismaService<PrismaDelegate<TTypeMapModel>, TTransactionClient> {
-  public async create(
-    args: TTypeMapModel['operations']['create']['args'],
+> extends BasePrismaService<PrismaDelegate<TDelegate>, TTransactionClient> {
+  public create(
+    args: Parameter<TDelegate['create']>,
     transaction?: unknown,
-  ): Promise<TTypeMapModel['operations']['create']['result']> {
+  ): ReturnType<TDelegate['create']> {
     return this.#invoke('create', args, transaction);
   }
 
-  public async createMany(
-    args: TTypeMapModel['operations']['createManyAndReturn']['args'],
+  public createManyAndReturn(
+    args: Parameter<TDelegate['createManyAndReturn']>,
     transaction?: unknown,
-  ): Promise<TTypeMapModel['operations']['createManyAndReturn']['result']> {
+  ): ReturnType<TDelegate['createManyAndReturn']> {
     return this.#invoke('createManyAndReturn', args, transaction);
   }
 
-  public async delete(
-    args: TTypeMapModel['operations']['delete']['args'],
+  public delete(
+    args: Parameter<TDelegate['delete']>,
     transaction?: unknown,
-  ): Promise<TTypeMapModel['operations']['delete']['result']> {
+  ): ReturnType<TDelegate['delete']> {
     return this.#invoke('delete', args, transaction);
   }
 
-  public async deleteMany(
-    args: TTypeMapModel['operations']['deleteMany']['args'],
+  public deleteMany(
+    args: Parameter<TDelegate['deleteMany']>,
     transaction?: unknown,
-  ): Promise<TTypeMapModel['operations']['deleteMany']['result']> {
+  ): ReturnType<TDelegate['deleteMany']> {
     return this.#invoke('deleteMany', args, transaction);
   }
 
-  public async findFirst(
-    args: TTypeMapModel['operations']['findFirst']['args'],
+  public findFirst(
+    args: Parameter<TDelegate['findFirst']>,
     transaction?: unknown,
-  ): Promise<TTypeMapModel['operations']['findFirst']['result']> {
+  ): ReturnType<TDelegate['findFirst']> {
     return this.#invoke('findFirst', args, transaction);
   }
 
-  public async findMany(
-    args: TTypeMapModel['operations']['findMany']['args'],
+  public findMany(
+    args: Parameter<TDelegate['findMany']>,
     transaction?: unknown,
-  ): Promise<TTypeMapModel['operations']['findMany']['result']> {
+  ): ReturnType<TDelegate['findMany']> {
     return this.#invoke('findMany', args, transaction);
   }
 
-  public async update(
-    args: TTypeMapModel['operations']['update']['args'],
+  public update(
+    args: Parameter<TDelegate['update']>,
     transaction?: unknown,
-  ): Promise<TTypeMapModel['operations']['update']['result']> {
+  ): ReturnType<TDelegate['update']> {
     return this.#invoke('update', args, transaction);
   }
 
-  public async updateManyAndReturn(
-    args: TTypeMapModel['operations']['updateManyAndReturn']['args'],
+  public updateManyAndReturn(
+    args: Parameter<TDelegate['updateManyAndReturn']>,
     transaction?: unknown,
-  ): Promise<TTypeMapModel['operations']['updateManyAndReturn']['result']> {
+  ): ReturnType<TDelegate['updateManyAndReturn']> {
     return this.#invoke('updateManyAndReturn', args, transaction);
   }
 
-  async #invoke<TOperationKind extends TypeMapOperationKind>(
+  #flattenPromiseAwaitedPromise<T extends Promise<unknown>>(
+    promise: Promise<Awaited<T>>,
+  ): T {
+    return promise as T;
+  }
+
+  async #innerInvoke<TOperationKind extends OperationKind>(
     operationKind: TOperationKind,
-    args: TTypeMapModel['operations'][TOperationKind]['args'],
+    args: Parameters<TDelegate[TOperationKind]>[0],
     transaction?: unknown,
-  ): Promise<TTypeMapModel['operations'][TOperationKind]['result']> {
-    const delegate: PrismaDelegate<TTypeMapModel> =
+  ): Promise<Awaited<ReturnType<TDelegate[TOperationKind]>>> {
+    const delegate: PrismaDelegate<TDelegate> =
       await this._getDelegateFromWrapper(transaction);
 
-    return delegate[operationKind](args);
+    return await delegate[operationKind](args);
+  }
+
+  #invoke<TOperationKind extends OperationKind>(
+    operationKind: TOperationKind,
+    args: Parameters<TDelegate[TOperationKind]>[0],
+    transaction?: unknown,
+  ): ReturnType<TDelegate[TOperationKind]> {
+    return this.#flattenPromiseAwaitedPromise(
+      this.#innerInvoke(operationKind, args, transaction),
+    );
   }
 }
