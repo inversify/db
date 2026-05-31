@@ -33,6 +33,11 @@
       "inputs": ["src/**/*.{cts,mts,ts,tsx}"],
       "outputs": []
     },
+    "@inversifyjs/prisma#test:integration": {
+      "dependsOn": ["^build", "test:db:generate"],
+      "inputs": ["src/**/*.{cts,mts,ts,tsx}"],
+      "outputs": []
+    },
     "test:coverage": {
       "dependsOn": ["^build"],
       "inputs": ["src/**/*.{cts,mts,ts,tsx}"],
