@@ -3,6 +3,7 @@ import { buildDefaultConfig } from '@inversifyjs/foundation-eslint-config';
 import plugin from '@inversifyjs/eslint-plugin-require-extensions';
 
 export default [
+  { ignores: ['**/src/sqlite/generated/**'] },
   ...buildDefaultConfig(
     {
       '@typescript-eslint/consistent-type-imports': [
