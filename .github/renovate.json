@@ -50,6 +50,11 @@
   ],
   "packageRules": [
     {
+      "description": "Ignore updates to dependencies that are less than 3 days old",
+      "matchDatasources": ["npm"],
+      "minimumReleaseAge": "3 days"
+    },
+    {
       "automerge": true,
       "description": "auto merge on patch or minor",
       "groupName": "auto merge on patch or minor",
