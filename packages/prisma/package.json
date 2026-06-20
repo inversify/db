@@ -5,7 +5,7 @@
   },
   "description": "InversifyJs Prisma package",
   "devDependencies": {
-    "@faker-js/faker": "10.4.0",
+    "@faker-js/faker": "10.5.0",
     "@prisma/adapter-better-sqlite3": "7.8.0",
     "@prisma/client": "7.8.0",
     "@prisma/client-runtime-utils": "7.8.0",
@@ -38,7 +38,7 @@
   },
   "name": "@inversifyjs/prisma",
   "peerDependencies": {
-    "inversify": "^8.1.0"
+    "inversify": "^8.1.1"
   },
   "publishConfig": {
     "access": "public"
