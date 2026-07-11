@@ -11,7 +11,7 @@
     "@prisma/client-runtime-utils": "7.8.0",
     "@prisma/config": "7.8.0",
     "@prisma/driver-adapter-utils": "7.8.0",
-    "@types/node": "24.13.2",
+    "@types/node": "24.13.3",
     "@vitest/coverage-v8": "4.1.10",
     "eslint": "10.6.0",
     "prettier": "3.9.4",
@@ -38,7 +38,7 @@
   },
   "name": "@inversifyjs/prisma",
   "peerDependencies": {
-    "inversify": "^8.1.1"
+    "inversify": "^8.1.2"
   },
   "publishConfig": {
     "access": "public"
