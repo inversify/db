@@ -20,12 +20,12 @@
     "@inversifyjs/foundation-vitest-config": "0.2.0",
     "husky": "9.1.7",
     "knip": "6.27.0",
-    "lint-staged": "17.0.8",
+    "lint-staged": "17.1.0",
     "turbo": "2.10.5"
   },
   "homepage": "https://inversify.io/db/",
   "license": "MIT",
-  "packageManager": "pnpm@11.14.0",
+  "packageManager": "pnpm@11.15.0",
   "private": true,
   "repository": {
     "type": "git",
