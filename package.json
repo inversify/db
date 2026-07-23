@@ -25,7 +25,7 @@
   },
   "homepage": "https://inversify.io/db/",
   "license": "MIT",
-  "packageManager": "pnpm@11.15.0",
+  "packageManager": "pnpm@11.15.1",
   "private": true,
   "repository": {
     "type": "git",
