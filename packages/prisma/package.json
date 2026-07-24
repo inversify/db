@@ -38,7 +38,7 @@
   },
   "name": "@inversifyjs/prisma",
   "peerDependencies": {
-    "inversify": "^8.2.1"
+    "inversify": "^8.2.2"
   },
   "publishConfig": {
     "access": "public"
