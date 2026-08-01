@@ -26,7 +26,7 @@ export default {
     "packages/*": defaultWorkspaceProjectConfig,
     "packages/prisma": {
       ...defaultWorkspaceProjectConfig,
-      ignoreDependencies: ["@prisma/client"],
+      ignoreDependencies: ["@prisma/client", "@prisma/client-runtime-utils"],
       ignoreFiles: ["src/sqlite/generated/**"],
     },
   },
