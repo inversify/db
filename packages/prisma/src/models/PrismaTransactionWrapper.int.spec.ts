@@ -4,34 +4,12 @@ import { faker } from '@faker-js/faker';
 import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import { execSync } from 'child_process';
 
-import { type PrismaDelegate } from '../models/PrismaDelegate.js';
-import { PrismaTransactionWrapper } from '../models/PrismaTransactionWrapper.js';
-import {
-  type Prisma,
-  PrismaClient,
-  type User,
-} from '../sqlite/generated/index.js';
+import { PrismaClient, type User } from '../sqlite/generated/index.js';
 import type * as runtime from '../sqlite/generated/runtime/client.js';
-import { PrismaRepository } from './PrismaRepository.js';
+import { PrismaTransactionWrapper } from './PrismaTransactionWrapper.js';
 
-class UserPrismaRepository extends PrismaRepository<
-  Prisma.UserDelegate,
-  Omit<PrismaClient, runtime.ITXClientDenyList>
-> {
-  constructor(prismaClient: PrismaClient) {
-    super(prismaClient.user);
-  }
-
-  protected _getDelegate(
-    transactionClient: Omit<PrismaClient, runtime.ITXClientDenyList>,
-  ): PrismaDelegate<Prisma.UserDelegate> {
-    return transactionClient.user;
-  }
-}
-
-describe(PrismaRepository, () => {
+describe(PrismaTransactionWrapper, () => {
   let prismaClient: PrismaClient;
-  let prismaRepository: UserPrismaRepository;
 
   beforeAll(() => {
     execSync(
@@ -48,8 +26,6 @@ describe(PrismaRepository, () => {
     prismaClient = new PrismaClient({
       adapter,
     });
-
-    prismaRepository = new UserPrismaRepository(prismaClient);
   });
 
   describe('.create', () => {
@@ -84,21 +60,18 @@ describe(PrismaRepository, () => {
         let userResultPromise: Promise<User | null>;
 
         beforeAll(async () => {
-          user = await prismaRepository.create(
-            {
-              data: userData,
-            },
-            firstTransactionWrapper,
-          );
+          user = await (
+            await firstTransactionWrapper.unwrap()
+          ).user.create({
+            data: userData,
+          });
 
-          userResultPromise = prismaRepository.findFirst(
-            {
+          userResultPromise = (async () =>
+            (await secondTransactionWrapper.unwrap()).user.findFirst({
               where: {
                 id: user.id,
               },
-            },
-            secondTransactionWrapper,
-          );
+            }))();
         });
 
         describe('when the transaction is committed and the user is searched for', () => {
