@@ -48,13 +48,28 @@
       "inputs": ["src/**/*.{cts,mts,ts,tsx}"],
       "outputs": ["coverage/**"]
     },
+    "@inversifyjs/prisma#test:coverage": {
+      "dependsOn": ["^build", "test:db:generate"],
+      "inputs": ["src/**/*.{cts,mts,ts,tsx}"],
+      "outputs": []
+    },
     "test:uncommitted": {
       "dependsOn": ["^build"],
       "inputs": ["src/**/*.{cts,mts,ts,tsx}"],
       "outputs": []
     },
+    "@inversifyjs/prisma#test:uncommitted": {
+      "dependsOn": ["^build", "test:db:generate"],
+      "inputs": ["src/**/*.{cts,mts,ts,tsx}"],
+      "outputs": []
+    },
     "test:unit": {
       "dependsOn": ["^build"],
+      "inputs": ["src/**/*.{cts,mts,ts,tsx}"],
+      "outputs": []
+    },
+    "@inversifyjs/prisma#test:unit": {
+      "dependsOn": ["^build", "test:db:generate"],
       "inputs": ["src/**/*.{cts,mts,ts,tsx}"],
       "outputs": []
     }
