@@ -6,7 +6,7 @@
   "name": "root",
   "description": "Inversify DB monorepo root package",
   "devDependencies": {
-    "@changesets/cli": "2.31.1",
+    "@changesets/cli": "3.0.1",
     "@commitlint/cli": "21.2.2",
     "@commitlint/config-conventional": "21.2.2",
     "@commitlint/prompt-cli": "21.2.2",
