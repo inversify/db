@@ -1,4 +1,4 @@
-import { type SqlDriverAdapterFactory } from '@prisma/driver-adapter-utils';
+import type { SqlDriverAdapterFactory } from '@prisma/driver-adapter-utils';
 import {
   ContainerModule,
   type ContainerModuleLoadOptions,
@@ -8,13 +8,13 @@ import {
 
 import { prismaClientServiceIdentifier } from '../models/prismaClientServiceIdentifier.js';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// oxlint-disable-next-line typescript/no-explicit-any
 type PrismaClientType = Newable<any, any[]>;
 
 export interface PrismaContainerModuleOptions<
   TOptions,
   TFactory extends (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
     ...args: any[]
   ) => TOptions | Promise<TOptions>,
 > {
@@ -34,7 +34,7 @@ export interface PrismaContainerModuleOptions<
 
 function bindPrismaClientAsResolvedValue<
   TOptions,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any
   TFactory extends (...args: any[]) => TOptions | Promise<TOptions>,
 >(
   options: ContainerModuleLoadOptions,
@@ -56,7 +56,7 @@ function bindPrismaClientAsResolvedValue<
 
 export class PrismaContainerModule<
   TOptions,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // oxlint-disable-next-line typescript/no-explicit-any
   TFactory extends (...args: any[]) => TOptions | Promise<TOptions>,
 > extends ContainerModule {
   constructor(

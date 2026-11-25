@@ -1,7 +1,7 @@
 import { InversifyPrismaError } from './InversifyPrismaError.js';
 import { InversifyPrismaErrorKind } from './InversifyPrismaErrorKind.js';
-import { type PrismaClient } from './PrismaClient.js';
-import { type TransactionWrapper } from './TransactionWrapper.js';
+import type { PrismaClient } from './PrismaClient.js';
+import type { TransactionWrapper } from './TransactionWrapper.js';
 
 type Properties<TTransactionClient> = [
   Promise<void>,
@@ -34,12 +34,12 @@ export class PrismaTransactionWrapper<
 
   public static is<TTransactionClient>(
     value: unknown,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // oxlint-disable-next-line typescript/no-explicit-any
   ): value is PrismaTransactionWrapper<any, TTransactionClient> {
     return (
       typeof value === 'object' &&
       value !== null &&
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // oxlint-disable-next-line typescript/no-explicit-any
       (value as Partial<PrismaTransactionWrapper<any, TTransactionClient>>)[
         isPrismaTransactionWrapperSymbol
       ] === true

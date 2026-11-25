@@ -1,6 +1,11 @@
 name: Setup action
 description: Reusable action to setup node and install packages
 
+inputs:
+  registry-url:
+    description: Optional npm registry URL. When set, configures auth for NODE_AUTH_TOKEN via actions/setup-node.
+    required: false
+
 runs:
   using: "composite"
   steps:
@@ -10,6 +15,7 @@ runs:
       with:
         node-version: 24.22.3
         package-manager-cache: false
+        registry-url: ${{ inputs.registry-url }}
 
     - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       name: Install pnpm

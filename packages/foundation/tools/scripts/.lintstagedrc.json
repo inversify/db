@@ -1,5 +1,3 @@
 {
-  "*.js": [
-    "prettier --write"
-  ]
+  "*.{js,ts}": ["oxfmt --write"]
 }

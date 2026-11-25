@@ -57,8 +57,8 @@ pnpm run --filter "@inversifyjs/package-name" format
 - **TypeScript**: Strict mode enabled across all packages
 - **Testing**: Use Vitest with extensive unit and integration test coverage
 - **Mocking**: External modules are mocked using `vitest.fn()`
-- **Formatting**: Prettier configuration shared via `@inversifyjs/foundation-prettier-config`
-- **Linting**: ESLint configuration shared via `@inversifyjs/foundation-eslint-config`
+- **Formatting**: oxfmt configuration shared via `@inversifyjs/foundation-oxfmt-config`
+- **Linting**: oxlint configuration shared via `@inversifyjs/foundation-oxlint-config`
 
 ## Testing Instructions
 
