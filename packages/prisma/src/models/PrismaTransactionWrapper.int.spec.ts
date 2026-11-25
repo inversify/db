@@ -1,10 +1,12 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
-import { faker } from '@faker-js/faker';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
 import { execSync } from 'child_process';
 
-import { PrismaClient, type User } from '../sqlite/generated/index.js';
+import { faker } from '@faker-js/faker';
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+
+import { PrismaClient } from '../sqlite/generated/index.js';
+import type { User } from '../sqlite/generated/index.js';
 import type * as runtime from '../sqlite/generated/runtime/client.js';
 import { PrismaTransactionWrapper } from './PrismaTransactionWrapper.js';
 

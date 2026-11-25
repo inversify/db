@@ -3,7 +3,8 @@
   "private": true,
   "description": "Common scripts for monorepo packages",
   "devDependencies": {
-    "prettier": "3.10.1"
+    "@inversifyjs/foundation-oxfmt-config": "0.2.0",
+    "oxfmt": "0.75.0"
   },
   "repository": {
     "type": "git",

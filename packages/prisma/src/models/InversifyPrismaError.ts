@@ -1,4 +1,4 @@
-import { type InversifyPrismaErrorKind } from './InversifyPrismaErrorKind.js';
+import type { InversifyPrismaErrorKind } from './InversifyPrismaErrorKind.js';
 
 const isErrorSymbol: unique symbol = Symbol.for(
   '@inversifyjs/prisma/InversifyPrismaError',
